@@ -110,38 +110,33 @@
 
 /* ---- Total cost hero ---- */
 .totalCost {
+  composes: glass-card from global;
   text-align: center;
-  padding: 3rem 2rem;
-  background: var(--grad-primary);
-  border-radius: var(--radius-xl);
-  position: relative;
-  overflow: hidden;
-  box-shadow: 0 20px 60px rgba(79,142,247,0.3);
-}
-.totalCost::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Ccircle cx='30' cy='30' r='30'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  padding: 4.5rem 2rem;
+  background: radial-gradient(circle at center, rgba(0, 229, 255, 0.08) 0%, transparent 70%);
+  border-width: 2px;
 }
 
 .totalLabel {
-  font-size: 0.85rem;
+  font-size: 1rem;
+  color: var(--text-muted);
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.7);
-  margin-bottom: 0.75rem;
-  font-weight: 600;
+  letter-spacing: 0.25em;
+  margin-bottom: 1rem;
 }
 
 .totalAmount {
   font-family: var(--font-heading);
-  font-size: clamp(2.5rem, 6vw, 4rem);
-  font-weight: 900;
-  color: #fff;
-  letter-spacing: -0.03em;
-  text-shadow: 0 2px 20px rgba(0,0,0,0.3);
-  animation: countUp 0.5s ease both;
+  font-size: clamp(3.5rem, 8vw, 5rem);
+  font-weight: 950;
+  line-height: 1;
+  letter-spacing: -0.05em;
+  background: var(--grad-primary);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: countUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
 .totalNote {

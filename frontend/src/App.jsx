@@ -3,7 +3,6 @@ import Navbar from './components/Navbar'
 import ChatAssistant from './components/ChatAssistant'
 import LandingPage from './pages/LandingPage'
 import SurveyPage from './pages/SurveyPage'
-import ManualInputPage from './pages/ManualInputPage'
 import ResultPage from './pages/ResultPage'
 
 export default function App() {
@@ -14,7 +13,6 @@ export default function App() {
         <Routes>
           <Route path="/"        element={<LandingPage />} />
           <Route path="/survey"  element={<SurveyPage />} />
-          <Route path="/manual"  element={<ManualInputPage />} />
           <Route path="/result"  element={<ResultPage />} />
         </Routes>
       </main>

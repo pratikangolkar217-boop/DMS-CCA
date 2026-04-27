@@ -1,5 +1,8 @@
 import { useNavigate } from 'react-router-dom'
+import { useState, useEffect } from 'react'
 import styles from './LandingPage.module.css'
+
+const KEYWORDS = ['Home', 'Mansion', 'Villa', 'Crib', 'Castle']
 
 const FEATURES = [
   {
@@ -26,6 +29,19 @@ const STATS = [
   { value: '100%', label: 'Free to Use' },
 ]
 
+function RotatingHeadline() {
+  const [index, setIndex] = useState(0)
+  
+  useEffect(() => {
+    const t = setInterval(() => setIndex(i => (i + 1) % KEYWORDS.length), 2000)
+    return () => clearInterval(t)
+  }, [])
+
+  return (
+    <span className={styles.rotatingWord}>{KEYWORDS[index]}</span>
+  )
+}
+
 export default function LandingPage() {
   const navigate = useNavigate()
 
@@ -34,18 +50,18 @@ export default function LandingPage() {
       {/* Background orbs */}
       <div className={styles.orb1} />
       <div className={styles.orb2} />
-      <div className={styles.orb3} />
 
       {/* Hero */}
       <section className={styles.hero}>
         <div className={`container ${styles.heroInner}`}>
-          <div className={`badge badge-primary animate-fadeInUp`}>
-            <span>✦</span> Smart Home Cost Estimator
+          <div className={`badge animate-fadeInUp ${styles.youthBadge}`}>
+            <span>⚡</span> The Future of Home Building
           </div>
 
           <h1 className={`${styles.heroTitle} animate-fadeInUp delay-1`}>
-            Build Your Dream Home<br />
-            <span className="gradient-text">Without the Guesswork</span>
+            Build Your Dream <br />
+            <span className="gradient-text"><RotatingHeadline /></span><br />
+            <span className={styles.subHero}>Without the Stress.</span>
           </h1>
 
           <p className={`${styles.heroDesc} animate-fadeInUp delay-2`}>
@@ -60,13 +76,6 @@ export default function LandingPage() {
               onClick={() => navigate('/survey')}
             >
               🚀 Start Free Estimate
-            </button>
-            <button
-              id="manual-input-btn"
-              className="btn btn-secondary btn-lg"
-              onClick={() => navigate('/manual')}
-            >
-              ✏️ Enter Manually
             </button>
           </div>
 
@@ -138,7 +147,7 @@ export default function LandingPage() {
 
           <div className={styles.featGrid}>
             {FEATURES.map((f, i) => (
-              <div key={i} className={`card ${styles.featCard} animate-fadeInUp`} style={{ animationDelay: `${i * 0.15}s` }}>
+              <div key={i} className={`${styles.featCard} animate-fadeInUp`} style={{ animationDelay: `${i * 0.15}s` }}>
                 <div className={styles.featIcon}>{f.icon}</div>
                 <h3 className={styles.featTitle}>{f.title}</h3>
                 <p className={styles.featDesc}>{f.desc}</p>

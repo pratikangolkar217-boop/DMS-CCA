@@ -22,11 +22,6 @@ export default function Navbar() {
             Start Estimating
           </Link>
         )}
-        {location.pathname !== '/manual' && (
-          <Link to="/manual" className="btn btn-ghost btn-sm">
-            Manual Input
-          </Link>
-        )}
       </div>
     </nav>
   )

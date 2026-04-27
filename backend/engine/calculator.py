@@ -145,12 +145,23 @@ def estimate(payload: dict) -> dict:
     )
 
     # Material quantities estimation (approximate)
+    # Adjust materials based on quality (premium uses slightly more robust materials)
+    mat_quality_factor = 1.0
+    if quality == "premium":
+        mat_quality_factor = 1.1
+    elif quality == "basic":
+        mat_quality_factor = 0.9
+
+    # Taller buildings need stronger foundations (more steel and cement per sq.ft)
+    steel_factor = 1.0 + (floors - 1) * 0.15
+    cement_factor = 1.0 + (floors - 1) * 0.05
+
     material_estimate = {
-        "cement": round(total_area * 0.4),          # bags
-        "steel": round(total_area * 3.5),           # kg
-        "bricks": round(total_area * 9),            # numbers
-        "sand": round(total_area * 1.8),            # cu.ft
-        "aggregate": round(total_area * 1.3),       # cu.ft
+        "cement": round(total_area * 0.4 * mat_quality_factor * cement_factor), # bags
+        "steel": round(total_area * 3.5 * mat_quality_factor * steel_factor),   # kg
+        "bricks": round(total_area * 9 * mat_quality_factor),                   # numbers
+        "sand": round(total_area * 1.8 * mat_quality_factor),                   # cu.ft
+        "aggregate": round(total_area * 1.3 * mat_quality_factor),              # cu.ft
     }
 
     return {
