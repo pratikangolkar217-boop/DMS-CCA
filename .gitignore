@@ -1,0 +1,25 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Python
+backend/venv/
+backend/__pycache__/
+backend/*.pyc
+backend/.env
+__pycache__/
+
+# Node
+frontend/node_modules/
+frontend/dist/
+node_modules/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Reports
+*.pdf
+*.png

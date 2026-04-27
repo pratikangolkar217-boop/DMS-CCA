@@ -1,0 +1,289 @@
+.page {
+  min-height: 100vh;
+  background: var(--grad-hero);
+  padding: 2rem 0 4rem;
+  position: relative;
+  overflow: hidden;
+}
+
+.orb {
+  position: fixed;
+  width: 700px; height: 700px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(79,142,247,0.12) 0%, transparent 70%);
+  top: -200px; right: -200px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.container {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 1rem 2rem 4rem;
+  position: relative;
+  z-index: 1;
+}
+
+.header { text-align: center; margin-bottom: 2.5rem; }
+.title { font-size: 2rem; font-weight: 800; margin-bottom: 0.5rem; }
+.subtitle { color: var(--text-secondary); font-size: 1rem; }
+
+/* ---- Step Card ---- */
+.card {
+  background: rgba(255,255,255,0.05);
+  backdrop-filter: blur(24px);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 2.5rem;
+  margin-bottom: 1.5rem;
+  animation: cardSlide 0.35s ease both;
+}
+
+@keyframes cardSlide {
+  from { opacity: 0; transform: translateX(30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.slideLeft { animation-name: cardSlideLeft; }
+@keyframes cardSlideLeft {
+  from { opacity: 0; transform: translateX(-30px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+
+.stepContent { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.stepIcon { font-size: 2.5rem; text-align: center; }
+.stepTitle { font-size: 1.5rem; font-weight: 700; text-align: center; }
+.stepDesc { font-size: 0.95rem; color: var(--text-secondary); text-align: center; line-height: 1.6; }
+
+/* ---- City grid ---- */
+.cityGrid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.cityChip {
+  padding: 0.45rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface-2);
+  border: 1.5px solid var(--color-border);
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  transition: var(--transition);
+  cursor: pointer;
+}
+.cityChip:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.cityChipActive {
+  background: rgba(79,142,247,0.15);
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  font-weight: 600;
+}
+
+.notFound { color: var(--text-muted); font-size: 0.88rem; font-style: italic; }
+
+/* ---- Area ---- */
+.areaWrap { position: relative; display: flex; align-items: center; }
+.areaInput { padding-right: 4.5rem !important; font-size: 1.4rem !important; font-weight: 700; }
+.areaUnit {
+  position: absolute;
+  right: 1.2rem;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 500;
+  pointer-events: none;
+}
+
+.dualArea {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  width: 100%;
+}
+
+.areaDivider {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+@media (max-width: 640px) {
+  .dualArea { flex-direction: column; gap: 1rem; }
+  .areaDivider { display: none; }
+}
+
+.presets { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.25rem; }
+.preset {
+  padding: 0.4rem 1rem;
+  border-radius: var(--radius-pill);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+}
+.preset:hover { border-color: var(--color-primary); color: var(--color-primary); }
+.presetActive { background: rgba(79,142,247,0.15); border-color: var(--color-primary); color: var(--color-primary); }
+
+/* ---- Floors ---- */
+.floorGrid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
+
+.floorCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.5rem 0.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.floorCard:hover { border-color: var(--color-primary); transform: translateY(-4px); }
+.floorCardActive { border-color: var(--color-primary); background: rgba(79,142,247,0.1); box-shadow: 0 0 20px rgba(79,142,247,0.2); }
+
+.floorIcon { font-size: 2rem; }
+.floorNum { font-size: 1.5rem; font-weight: 800; font-family: var(--font-heading); background: var(--grad-primary); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.floorLabel { font-size: 0.78rem; color: var(--text-muted); font-weight: 500; }
+
+/* ---- Quality ---- */
+.qualityGrid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+
+.qualityCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1.75rem 1rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: var(--transition);
+  overflow: hidden;
+}
+.qualityCard:hover { border-color: var(--q-color, var(--color-primary)); transform: translateY(-4px); }
+.qualityActive {
+  border-color: var(--q-color, var(--color-primary));
+  background: color-mix(in srgb, var(--q-color, #4f8ef7) 15%, transparent);
+  box-shadow: 0 0 24px color-mix(in srgb, var(--q-color, #4f8ef7) 30%, transparent);
+}
+
+.recommended {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  background: var(--grad-primary);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.2rem;
+  text-align: center;
+}
+
+.qualityIcon { font-size: 2rem; margin-top: 0.5rem; }
+.qualityLabel { font-size: 1rem; font-weight: 700; }
+.qualityMult { font-size: 0.78rem; color: var(--q-color, var(--color-primary)); font-weight: 600; padding: 0.2rem 0.6rem; border-radius: var(--radius-pill); background: color-mix(in srgb, var(--q-color, #4f8ef7) 15%, transparent); }
+.qualityDesc { font-size: 0.78rem; color: var(--text-muted); text-align: center; line-height: 1.4; }
+
+/* ---- Amenities ---- */
+.amenityGrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.75rem; }
+
+.amenityCard {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 1.25rem 0.75rem;
+  border-radius: var(--radius-lg);
+  background: var(--color-surface-2);
+  border: 2px solid var(--color-border);
+  cursor: pointer;
+  transition: var(--transition);
+}
+.amenityCard:hover { border-color: var(--color-accent); transform: translateY(-3px); }
+.amenityActive { border-color: var(--color-accent); background: rgba(6,214,160,0.08); }
+
+.amenityIcon { font-size: 1.75rem; }
+.amenityLabel { font-size: 0.85rem; font-weight: 600; }
+.amenityCost { font-size: 0.75rem; color: var(--color-accent); font-weight: 600; }
+.amenityCheck {
+  position: absolute;
+  top: 8px; right: 8px;
+  width: 20px; height: 20px;
+  border-radius: 50%;
+  background: var(--color-accent);
+  color: #fff;
+  font-size: 0.7rem;
+  font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* ---- Review ---- */
+.review {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+}
+
+.reviewRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.9rem 1.25rem;
+  border-bottom: 1px solid var(--color-border);
+  gap: 1rem;
+}
+.reviewRow:last-child { border-bottom: none; }
+
+.reviewLabel { font-size: 0.875rem; color: var(--text-muted); font-weight: 500; flex-shrink: 0; }
+.reviewValue { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); text-align: right; }
+
+.reviewSection {
+  padding: 0.6rem 1.25rem;
+  background: var(--color-surface-2);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 600;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---- Rooms wrap ---- */
+.roomsWrap { display: flex; flex-direction: column; gap: 1rem; }
+
+/* ---- Error ---- */
+.error {
+  background: rgba(239,68,68,0.1);
+  border: 1px solid rgba(239,68,68,0.3);
+  color: #fca5a5;
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-md);
+  font-size: 0.9rem;
+}
+
+/* ---- Navigation ---- */
+.navRow {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .card { padding: 1.5rem; }
+  .floorGrid { grid-template-columns: repeat(2, 1fr); }
+  .qualityGrid { grid-template-columns: 1fr; }
+  .amenityGrid { grid-template-columns: repeat(2, 1fr); }
+}
