@@ -47,17 +47,17 @@ export async function downloadAsPDF(elementId, filename = 'BuildSmart_Report') {
   const imgWidth = pageWidth - 20
   const imgHeight = (canvas.height * imgWidth) / canvas.width
 
-  let yPos = 10
+  let position = 10
   let remainingHeight = imgHeight
 
-  // Add pages as needed
-  while (remainingHeight > 0) {
-    pdf.addImage(imgData, 'PNG', 10, yPos, imgWidth, imgHeight)
-    remainingHeight -= pageHeight - 20
-    if (remainingHeight > 0) {
-      pdf.addPage()
-      yPos = -(pageHeight - 20) + 10
-    }
+  pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+  remainingHeight -= pageHeight
+
+  while (remainingHeight >= 0) {
+    position = position - pageHeight
+    pdf.addPage()
+    pdf.addImage(imgData, 'PNG', 10, position, imgWidth, imgHeight)
+    remainingHeight -= pageHeight
   }
 
   pdf.save(`${filename}.pdf`)
