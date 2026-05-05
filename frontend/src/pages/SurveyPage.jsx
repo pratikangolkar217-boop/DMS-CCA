@@ -1,31 +1,9 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import ProgressBar from '../components/ProgressBar'
 import RoomConfigurator from '../components/RoomConfigurator'
 import TipBubble from '../components/TipBubble'
 import styles from './SurveyPage.module.css'
-
-const CITIES = [
-  'Ahmedabad','Bangalore','Bengaluru','Bhopal','Chandigarh','Chennai',
-  'Coimbatore','Delhi','Hyderabad','Indore','Jaipur','Kochi','Kolkata',
-  'Lucknow','Mumbai','Nagpur','Patna','Pune','Surat','Visakhapatnam'
-]
-
-const QUALITY_OPTIONS = [
-  { key: 'basic',    label: 'Basic',    icon: '🧱', desc: 'Cost-effective materials. Good for budget builds.',  multiplier: '0.8×', color: '#f59e0b' },
-  { key: 'standard', label: 'Standard', icon: '🏠', desc: 'Balanced quality. Most popular choice.',            multiplier: '1.0×', color: '#4f8ef7', recommended: true },
-  { key: 'premium',  label: 'Premium',  icon: '🏰', desc: 'Top-tier finishes. Luxury construction.',           multiplier: '1.35×', color: '#7c3aed' },
-]
-
-const AMENITIES = [
-  { key: 'parking',         label: 'Parking',         icon: '🚗', cost: '₹1.5L' },
-  { key: 'garden',          label: 'Garden',           icon: '🌿', cost: '₹2L'   },
-  { key: 'security_room',   label: 'Security Room',    icon: '🛡️', cost: '₹1L'   },
-  { key: 'solar_panels',    label: 'Solar Panels',     icon: '☀️', cost: '₹3.5L' },
-  { key: 'swimming_pool',   label: 'Swimming Pool',    icon: '🏊', cost: '₹8L'   },
-  { key: 'modular_kitchen', label: 'Modular Kitchen',  icon: '🍳', cost: '₹2.5L' },
-  { key: 'home_theater',    label: 'Home Theater',     icon: '🎬', cost: '₹4L'   },
-]
 
 const STEP_LABELS = ['Location','Plot Area','Floors','Rooms','Quality','Amenities','Review']
 
@@ -54,6 +32,11 @@ export default function SurveyPage() {
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [citySearch, setCitySearch] = useState('')
+  
+  // Dynamic configuration state
+  const [config, setConfig] = useState({ cities: [], qualities: [], amenities: [] })
+  const [configLoading, setConfigLoading] = useState(true)
+  
   const TOTAL_STEPS = 7
 
   const [form, setForm] = useState({
@@ -61,7 +44,27 @@ export default function SurveyPage() {
     rooms: buildInitialRooms(1), quality: 'standard', amenities: [],
   })
 
-  const filteredCities = CITIES.filter(c => c.toLowerCase().includes(citySearch.toLowerCase()))
+  useEffect(() => {
+    fetch('http://127.0.0.1:5000/config')
+      .then(res => res.json())
+      .then(data => {
+        if (!data.error) {
+          setConfig({
+            cities: data.cities.map(c => c.name).sort(),
+            qualities: data.qualities,
+            amenities: data.amenities
+          })
+          // Update default quality if needed
+          if (data.qualities.length > 0 && !data.qualities.find(q => q.key === form.quality)) {
+             setForm(f => ({ ...f, quality: data.qualities[0].key }))
+          }
+        }
+      })
+      .catch(err => console.error("Failed to load config:", err))
+      .finally(() => setConfigLoading(false))
+  }, [])
+
+  const filteredCities = config.cities.filter(c => c.toLowerCase().includes(citySearch.toLowerCase()))
 
   const validateStep = () => {
     if (step === 1 && !form.location) { setError('Please select or enter a location.'); return false }
@@ -88,7 +91,7 @@ export default function SurveyPage() {
   const handleSubmit = async () => {
     setLoading(true); setError('')
     try {
-      const res = await fetch('/predict', {
+      const res = await fetch('http://127.0.0.1:5000/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(form),
@@ -99,6 +102,12 @@ export default function SurveyPage() {
     } catch (e) {
       setError(e.message); setLoading(false)
     }
+  }
+
+  if (configLoading) {
+    return <div className={styles.page} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <h2 style={{ color: 'white' }}>Loading Survey...</h2>
+    </div>
   }
 
   return (
@@ -209,7 +218,7 @@ export default function SurveyPage() {
               <h2 className={styles.stepTitle}>Construction quality level</h2>
               <p className={styles.stepDesc}>Choose the quality of materials and finishes.</p>
               <div className={styles.qualityGrid}>
-                {QUALITY_OPTIONS.map(q => (
+                {config.qualities.map(q => (
                   <button key={q.key} id={`quality-${q.key}`}
                     className={`${styles.qualityCard} ${form.quality === q.key ? styles.qualityActive : ''}`}
                     style={{ '--q-color': q.color }}
@@ -217,7 +226,7 @@ export default function SurveyPage() {
                     {q.recommended && <div className={styles.recommended}>⭐ Recommended</div>}
                     <span className={styles.qualityIcon}>{q.icon}</span>
                     <span className={styles.qualityLabel}>{q.label}</span>
-                    <span className={styles.qualityMult}>{q.multiplier} cost</span>
+                    <span className={styles.qualityMult}>{q.multiplier}x cost</span>
                     <span className={styles.qualityDesc}>{q.desc}</span>
                   </button>
                 ))}
@@ -231,13 +240,13 @@ export default function SurveyPage() {
               <h2 className={styles.stepTitle}>Add amenities</h2>
               <p className={styles.stepDesc}>Select any optional extras you'd like included.</p>
               <div className={styles.amenityGrid}>
-                {AMENITIES.map(a => (
+                {config.amenities.map(a => (
                   <button key={a.key} id={`amenity-${a.key}`}
                     className={`${styles.amenityCard} ${form.amenities.includes(a.key) ? styles.amenityActive : ''}`}
                     onClick={() => toggleAmenity(a.key)} type="button">
                     <span className={styles.amenityIcon}>{a.icon}</span>
                     <span className={styles.amenityLabel}>{a.label}</span>
-                    <span className={styles.amenityCost}>{a.cost}</span>
+                    <span className={styles.amenityCost}>₹{(a.cost / 100000).toFixed(1)}L</span>
                     {form.amenities.includes(a.key) && <span className={styles.amenityCheck}>✓</span>}
                   </button>
                 ))}
@@ -256,7 +265,7 @@ export default function SurveyPage() {
                   { label: 'Plot Area', value: `${form.area} sq.ft` },
                   { label: 'Floors', value: form.floors },
                   { label: 'Quality', value: form.quality.charAt(0).toUpperCase() + form.quality.slice(1) },
-                  { label: 'Amenities', value: form.amenities.length > 0 ? form.amenities.map(a => AMENITIES.find(x => x.key === a)?.label || a).join(', ') : 'None' },
+                  { label: 'Amenities', value: form.amenities.length > 0 ? form.amenities.map(a => config.amenities.find(x => x.key === a)?.label || a).join(', ') : 'None' },
                 ].map((row, i) => (
                   <div key={i} className={styles.reviewRow}>
                     <span className={styles.reviewLabel}>{row.label}</span>

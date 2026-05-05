@@ -10,6 +10,7 @@ export default defineConfig({
       '/cities': 'http://localhost:5000',
       '/chat': 'http://localhost:5000',
       '/health': 'http://localhost:5000',
+      '/vastu-layout': 'http://localhost:5000',
     },
   },
 })

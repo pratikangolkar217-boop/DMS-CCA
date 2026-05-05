@@ -1,0 +1,239 @@
+/* ── Page shell ─────────────────────────────────────────────────────────── */
+.page {
+  min-height: 100vh;
+  padding: 2rem 2rem 4rem;
+  max-width: 1280px;
+  margin: 0 auto;
+  font-family: 'Inter', 'Outfit', sans-serif;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────── */
+.pageHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.pageTitle {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 800;
+  background: linear-gradient(135deg, #fff 40%, #63b3ed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+.pageSubtitle {
+  margin: 0.25rem 0 0;
+  font-size: 0.85rem;
+  color: rgba(255,255,255,0.4);
+}
+.refreshBtn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.7);
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  cursor: pointer;
+  font-size: 0.85rem;
+  transition: background 0.15s, transform 0.1s;
+}
+.refreshBtn:hover { background: rgba(99,179,237,0.12); color: #63b3ed; transform: rotate(-10deg) scale(1.05); }
+
+/* ── Tabs ────────────────────────────────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.75rem;
+  border-bottom: 1px solid rgba(255,255,255,0.07);
+  padding-bottom: 0.5rem;
+}
+.tab {
+  background: none;
+  border: none;
+  color: rgba(255,255,255,0.45);
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 0.5rem 1.2rem;
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: background 0.15s, color 0.15s;
+}
+.tab:hover { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.75); }
+.tab.active { background: rgba(99,179,237,0.12); color: #63b3ed; }
+
+.badge {
+  background: #63b3ed;
+  color: #0f1629;
+  font-size: 0.65rem;
+  font-weight: 700;
+  border-radius: 20px;
+  padding: 0.1rem 0.45rem;
+  min-width: 18px;
+  text-align: center;
+}
+
+/* ── Error banner ────────────────────────────────────────────────────────── */
+.errorBanner {
+  background: rgba(252,129,129,0.08);
+  border: 1px solid rgba(252,129,129,0.25);
+  border-radius: 12px;
+  padding: 0.85rem 1.2rem;
+  font-size: 0.85rem;
+  color: #fc8181;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Dashboard ───────────────────────────────────────────────────────────── */
+.dashContent { display: flex; flex-direction: column; gap: 1.75rem; }
+
+.kpiGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1rem;
+}
+
+/* ── Charts ──────────────────────────────────────────────────────────────── */
+.chartsGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+.chartCard {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.07);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+}
+.chartCard.wide { grid-column: 1 / -1; }
+
+.chartTitle {
+  margin: 0 0 1rem;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: rgba(255,255,255,0.75);
+}
+.chartSkel {
+  height: 120px;
+  border-radius: 10px;
+  background: rgba(255,255,255,0.05);
+  animation: pulse 1.2s ease infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+/* ── Bar chart ───────────────────────────────────────────────────────────── */
+.barChart { display: flex; flex-direction: column; gap: 0.6rem; }
+.barRow { display: flex; align-items: center; gap: 0.6rem; }
+.barLabel { font-size: 0.75rem; color: rgba(255,255,255,0.55); width: 90px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.barTrack { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+.barFill   { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.22,1,0.36,1); }
+.barVal    { font-size: 0.72rem; color: rgba(255,255,255,0.4); width: 24px; text-align: right; }
+
+/* ── Sparkline ───────────────────────────────────────────────────────────── */
+.sparkWrap { display: flex; flex-direction: column; gap: 0.5rem; }
+.spark { width: 100%; height: 60px; display: block; }
+.sparkLabels { display: flex; justify-content: space-between; font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+
+/* ── Quality breakdown ───────────────────────────────────────────────────── */
+.qualityWrap { display: flex; flex-direction: column; gap: 0.75rem; }
+.qRow { display: flex; align-items: center; gap: 0.5rem; }
+.qDot  { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
+.qLabel { font-size: 0.75rem; color: rgba(255,255,255,0.6); width: 65px; flex-shrink: 0; }
+.qTrack { flex: 1; height: 8px; background: rgba(255,255,255,0.06); border-radius: 99px; overflow: hidden; }
+.qFill  { height: 100%; border-radius: 99px; transition: width 0.6s cubic-bezier(0.22,1,0.36,1); }
+.qPct   { font-size: 0.75rem; font-weight: 600; color: rgba(255,255,255,0.6); width: 32px; text-align: right; }
+.qCount { font-size: 0.7rem; color: rgba(255,255,255,0.3); }
+
+/* ── Recent section ──────────────────────────────────────────────────────── */
+.recentSection { display: flex; flex-direction: column; gap: 0.75rem; }
+.sectionHeader { display: flex; justify-content: space-between; align-items: center; }
+.viewAllBtn {
+  background: none;
+  border: 1px solid rgba(99,179,237,0.3);
+  color: #63b3ed;
+  border-radius: 8px;
+  padding: 0.35rem 0.85rem;
+  font-size: 0.78rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.viewAllBtn:hover { background: rgba(99,179,237,0.1); }
+
+/* ── History tab ─────────────────────────────────────────────────────────── */
+.histContent { display: flex; flex-direction: column; gap: 1.25rem; }
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  align-items: center;
+}
+.searchInput {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: #fff;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  min-width: 180px;
+}
+.searchInput:focus { border-color: rgba(99,179,237,0.5); }
+.searchInput option { background: #0f1629; }
+
+.filterBtn {
+  background: linear-gradient(135deg, #63b3ed, #4299e1);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.55rem 1.2rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.filterBtn:hover { opacity: 0.88; }
+
+.clearBtn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.5);
+  border-radius: 10px;
+  padding: 0.55rem 1rem;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.clearBtn:hover { background: rgba(252,129,129,0.1); color: #fc8181; border-color: rgba(252,129,129,0.3); }
+
+.totalBadge {
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.35);
+  margin-left: 0.25rem;
+}
+
+/* ── No data ─────────────────────────────────────────────────────────────── */
+.noData {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.3);
+  margin: 1rem 0 0;
+  text-align: center;
+}
+
+/* ── Responsive ──────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .page { padding: 1rem; }
+  .chartsGrid { grid-template-columns: 1fr; }
+  .chartCard.wide { grid-column: 1; }
+  .kpiGrid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 480px) {
+  .kpiGrid { grid-template-columns: 1fr; }
+}

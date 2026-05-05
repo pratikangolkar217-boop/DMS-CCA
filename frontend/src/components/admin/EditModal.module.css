@@ -1,0 +1,160 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(6px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 1rem;
+  animation: fadeIn 0.2s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.modal {
+  background: #0f1629;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 620px;
+  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+  animation: slideUp 0.25s ease;
+  overflow: hidden;
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(24px) scale(0.98); }
+  to   { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 1.5rem 1.5rem 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+.title  { margin: 0; font-size: 1.2rem; font-weight: 700; color: #fff; }
+.subtitle { margin: 0.25rem 0 0; font-size: 0.75rem; color: rgba(255,255,255,0.35); }
+.subtitle code { font-size: 0.68rem; color: rgba(99,179,237,0.7); background: rgba(99,179,237,0.08); padding: 0.1rem 0.3rem; border-radius: 4px; }
+
+.closeBtn {
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  border-radius: 8px;
+  width: 32px; height: 32px;
+  cursor: pointer;
+  font-size: 0.85rem;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+  flex-shrink: 0;
+}
+.closeBtn:hover { background: rgba(252,129,129,0.15); color: #fc8181; border-color: rgba(252,129,129,0.3); }
+
+.origStrip {
+  display: flex;
+  gap: 2rem;
+  padding: 0.75rem 1.5rem;
+  background: rgba(255,255,255,0.03);
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  font-size: 0.78rem;
+  color: rgba(255,255,255,0.45);
+}
+.origStrip strong { color: rgba(255,255,255,0.75); }
+
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+}
+
+.field { display: flex; flex-direction: column; gap: 0.35rem; }
+.fullWidth { grid-column: 1 / -1; }
+
+.fieldLabel {
+  font-size: 0.7rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: rgba(255,255,255,0.45);
+}
+
+.input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  color: #fff;
+  padding: 0.6rem 0.85rem;
+  font-size: 0.875rem;
+  font-family: inherit;
+  width: 100%;
+  box-sizing: border-box;
+  transition: border-color 0.15s, background 0.15s;
+  outline: none;
+}
+.input:focus {
+  border-color: rgba(99,179,237,0.5);
+  background: rgba(99,179,237,0.06);
+}
+.input option { background: #0f1629; }
+
+.costInput { color: #68d391; font-weight: 700; font-size: 1rem; }
+.textarea  { resize: vertical; min-height: 80px; }
+
+.error {
+  margin: 0 1.5rem;
+  padding: 0.6rem 1rem;
+  background: rgba(252,129,129,0.1);
+  border: 1px solid rgba(252,129,129,0.3);
+  border-radius: 10px;
+  font-size: 0.8rem;
+  color: #fc8181;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+
+.cancelBtn {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  color: rgba(255,255,255,0.6);
+  border-radius: 10px;
+  padding: 0.6rem 1.4rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  transition: background 0.15s;
+}
+.cancelBtn:hover:not(:disabled) { background: rgba(255,255,255,0.1); }
+
+.saveBtn {
+  background: linear-gradient(135deg, #63b3ed, #4299e1);
+  border: none;
+  color: #fff;
+  border-radius: 10px;
+  padding: 0.6rem 1.6rem;
+  cursor: pointer;
+  font-size: 0.875rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: opacity 0.15s, transform 0.1s;
+}
+.saveBtn:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+.saveBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.spinner {
+  width: 14px; height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }

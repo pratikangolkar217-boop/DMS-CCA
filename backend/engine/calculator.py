@@ -62,15 +62,6 @@ def calculate_room_count(rooms: dict) -> dict:
 def estimate(payload: dict) -> dict:
     """
     Main estimation function.
-
-    Args:
-        payload: dict with keys:
-            location (str), area (float), floors (int),
-            rooms (dict), quality (str), amenities (list[str])
-
-    Returns:
-        dict with total_cost (int), breakdown (dict), location_info (dict),
-              room_summary (dict), recommendations (list[str])
     """
     location = payload.get("location", "")
     area = float(payload.get("area", 1000))
@@ -83,8 +74,43 @@ def estimate(payload: dict) -> dict:
     area = max(200, min(area, 50000))
     floors = max(1, min(floors, 10))
 
-    # Location data
-    location_data, is_fallback = get_location_data(location)
+    # ---- Fetch DB Config ----
+    db_config = None
+    try:
+        from db import get_config_collection
+        col = get_config_collection()
+        if col is not None:
+            db_config = col.find_one({"_id": "app_config"})
+    except Exception:
+        pass
+        
+    # Build dynamic maps
+    quality_map = dict(QUALITY_MULTIPLIERS)
+    amenity_map = dict(AMENITY_COSTS)
+    city_map = {}
+    
+    if db_config:
+        for q in db_config.get("qualities", []):
+            quality_map[q["key"]] = q["multiplier"]
+        for a in db_config.get("amenities", []):
+            amenity_map[a["key"]] = a["cost"]
+        for c in db_config.get("cities", []):
+            city_map[c["name"].lower()] = c
+
+    # ---- Location data ----
+    location_key = location.strip().lower()
+    is_fallback = False
+    
+    if location_key in city_map:
+        c = city_map[location_key]
+        location_data = {
+            "display": c["name"],
+            "cost_per_sqft": c["cost_per_sqft"],
+            "labor_multiplier": c["labor_multiplier"],
+            "material_multiplier": c["material_multiplier"]
+        }
+    else:
+        location_data, is_fallback = get_location_data(location)
     
     # AI-powered pricing for unlisted cities
     is_ai_estimated = False
@@ -107,7 +133,7 @@ def estimate(payload: dict) -> dict:
     location_factor = (labor_mult + material_mult) / 2
 
     # Quality multiplier
-    quality_mult = QUALITY_MULTIPLIERS.get(quality, 1.00)
+    quality_mult = quality_map.get(quality, 1.00)
 
     # Total area accounting for all floors
     total_area = area * floors
@@ -120,7 +146,7 @@ def estimate(payload: dict) -> dict:
     amenity_breakdown = {}
     for amenity in amenities:
         amenity_key = amenity.lower().replace(" ", "_")
-        cost = AMENITY_COSTS.get(amenity_key, 0)
+        cost = amenity_map.get(amenity_key, 0)
         if cost:
             amenity_breakdown[amenity] = cost
             extras += cost
@@ -128,9 +154,13 @@ def estimate(payload: dict) -> dict:
     total_cost = base_cost + extras
 
     # Breakdown (applied proportionally to base cost only)
+    breakdown_ratios = dict(BREAKDOWN_RATIOS)
+    if db_config and "breakdown" in db_config:
+        breakdown_ratios = db_config["breakdown"]
+        
     breakdown = {
         key: round(base_cost * ratio)
-        for key, ratio in BREAKDOWN_RATIOS.items()
+        for key, ratio in breakdown_ratios.items()
     }
 
     # Add amenity extras into miscellaneous for display clarity

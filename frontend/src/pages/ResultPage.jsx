@@ -11,11 +11,11 @@ import styles from './ResultPage.module.css'
 ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement, Title)
 
 const BREAKDOWN_META = {
-  foundation:   { label: 'Foundation',   icon: '🪨', color: '#4f8ef7' },
-  structure:    { label: 'Structure',     icon: '🏗️', color: '#7c3aed' },
-  interior:     { label: 'Interior',      icon: '🛋️', color: '#06d6a0' },
-  labor:        { label: 'Labor',         icon: '👷', color: '#f59e0b' },
-  miscellaneous:{ label: 'Miscellaneous', icon: '📦', color: '#ef4444' },
+  foundation: { label: 'Foundation', icon: '🪨', color: '#4f8ef7' },
+  structure: { label: 'Structure', icon: '🏗️', color: '#7c3aed' },
+  interior: { label: 'Interior', icon: '🛋️', color: '#06d6a0' },
+  labor: { label: 'Labor', icon: '👷', color: '#f59e0b' },
+  miscellaneous: { label: 'Miscellaneous', icon: '📦', color: '#ef4444' },
 }
 
 function EMICalculator({ totalCost }) {
@@ -38,7 +38,7 @@ function EMICalculator({ totalCost }) {
         <div className={styles.emiInput}>
           <label>Loan Amount (% of Cost)</label>
           <input type="range" min="50" max="90" step="5" value={loanPct} onChange={e => setLoanPct(e.target.value)} />
-          <span>{loanPct}% (₹{(loanAmount/100000).toFixed(1)}L)</span>
+          <span>{loanPct}% (₹{(loanAmount / 100000).toFixed(1)}L)</span>
         </div>
         <div className={styles.emiInput}>
           <label>Interest Rate (%)</label>
@@ -140,8 +140,8 @@ export default function ResultPage() {
     ...chartOptions,
     scales: {
       y: {
-        ticks: { color: '#8892b0', callback: v => '₹' + (v/100000).toFixed(0) + 'L' },
-        grid:  { color: 'rgba(255,255,255,0.05)' },
+        ticks: { color: '#8892b0', callback: v => '₹' + (v / 100000).toFixed(0) + 'L' },
+        grid: { color: 'rgba(255,255,255,0.05)' },
       },
       x: { ticks: { color: '#8892b0' }, grid: { display: false } },
     },
@@ -188,7 +188,7 @@ export default function ResultPage() {
 
         {/* Report Content (captured for PDF/PNG) */}
         <div id="report-content" className={styles.report}>
-          
+
           {/* Branded Header (Visible in PDF) */}
           <div className={styles.brandedHeader}>
             <div className="navbar-logo">🏗️ BuildSmart</div>
@@ -251,10 +251,10 @@ export default function ResultPage() {
             <div className={styles.inputGrid}>
               {[
                 { label: 'Location', value: location_info.city },
-                { label: 'Plot Area', value: `${calcInputs.area?.toLocaleString()} sq.ft (${(calcInputs.area/1089).toFixed(2)} Guntha)` },
+                { label: 'Plot Area', value: `${calcInputs.area?.toLocaleString()} sq.ft (${(calcInputs.area / 1089).toFixed(2)} Guntha)` },
                 { label: 'Floors', value: inputs.floors },
-                { label: 'Total Built-up', value: `${calcInputs.total_area?.toLocaleString()} sq.ft (${(calcInputs.total_area/1089).toFixed(2)} Guntha)` },
-                { label: 'Quality', value: (inputs.quality||'').charAt(0).toUpperCase() + (inputs.quality||'').slice(1) },
+                { label: 'Total Built-up', value: `${calcInputs.total_area?.toLocaleString()} sq.ft (${(calcInputs.total_area / 1089).toFixed(2)} Guntha)` },
+                { label: 'Quality', value: (inputs.quality || '').charAt(0).toUpperCase() + (inputs.quality || '').slice(1) },
                 { label: 'Base Rate', value: `₹${location_info.cost_per_sqft}/sq.ft` },
                 { label: 'Bedrooms (total)', value: room_summary?.bedrooms?.toLocaleString() },
                 { label: 'Bathrooms (total)', value: room_summary?.bathrooms?.toLocaleString() },
@@ -303,10 +303,10 @@ export default function ResultPage() {
               <h3 className={styles.sectionTitle}>🧱 Material Requirement Estimates (Approx)</h3>
               <div className={styles.materialGrid}>
                 {[
-                  { label: 'Cement',    val: `${result.material_estimate.cement} Bags`, icon: '🛒' },
-                  { label: 'Steel',     val: `${result.material_estimate.steel?.toLocaleString()} kg`, icon: '🏗️' },
-                  { label: 'Bricks',    val: `${result.material_estimate.bricks?.toLocaleString()} Nos`, icon: '🧱' },
-                  { label: 'Sand',      val: `${result.material_estimate.sand?.toLocaleString()} cu.ft`, icon: '🏜️' },
+                  { label: 'Cement', val: `${result.material_estimate.cement} Bags`, icon: '🛒' },
+                  { label: 'Steel', val: `${result.material_estimate.steel?.toLocaleString()} kg`, icon: '🏗️' },
+                  { label: 'Bricks', val: `${result.material_estimate.bricks?.toLocaleString()} Nos`, icon: '🧱' },
+                  { label: 'Sand', val: `${result.material_estimate.sand?.toLocaleString()} cu.ft`, icon: '🏜️' },
                   { label: 'Aggregate', val: `${result.material_estimate.aggregate?.toLocaleString()} cu.ft`, icon: '🪨' },
                 ].map((m, i) => (
                   <div key={i} className={styles.materialCard}>

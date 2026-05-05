@@ -99,3 +99,67 @@ def get_city_pricing_ai(city_name):
     except Exception as e:
         print(f"AI City Pricing Error: {e}")
         return None
+
+def generate_vastu_layout_ai(rooms_dict, amenities_list=None):
+    """
+    Takes a dictionary of room counts and an optional list of amenities.
+    Asks Groq to assign them to Vastu zones (NW, N, NE, W, C, E, SW, S, SE).
+    """
+    if not client:
+        return None
+
+    if amenities_list is None:
+        amenities_list = []
+
+    # Flatten rooms
+    items_to_place = []
+    for room_type, count in rooms_dict.items():
+        if room_type == "optional":
+            room_type = "pooja" # Contextualize for Vastu
+        for i in range(count):
+            items_to_place.append({"id": f"{room_type}-{i+1}", "type": room_type})
+            
+    # Add physical amenities that take up space
+    physical_amenities = ['parking', 'garden', 'swimming_pool', 'security_room']
+    for am in amenities_list:
+        if am in physical_amenities:
+            items_to_place.append({"id": f"amenity-{am}", "type": am})
+
+    prompt = f"""
+    You are a Master Indian Contractor and Vastu Expert.
+    I have a list of rooms and amenities to place in a 3x3 grid of a house plot.
+    The 9 available zones are: NW, N, NE, W, C (Center/Brahmasthan), E, SW, S, SE.
+    
+    Items to place: {json.dumps(items_to_place)}
+    
+    Contractor & Vastu Rules:
+    1. Kitchen must prioritize SE (Agneya) or NW.
+    2. Master Bedroom (usually bedroom-1) must prioritize SW (Nairutya) or S.
+    3. Pooja room (if any) must prioritize NE.
+    4. Hall/Living room must prioritize C, N, or E.
+    5. Bathrooms should be NW, W, or S. Avoid NE and SW.
+    6. Parking (Car Porch) MUST be placed near the entrance (N, E, NE) or NW.
+    7. Garden / Swimming Pool MUST be placed in N, NE, or E (associated with water/air).
+    8. Security Room should be near the entrance or NW.
+    9. DO NOT assign two items to the exact same zoneKey. If you run out of preferred zones, use any empty zone.
+    
+    Return ONLY a valid JSON object in this exact format:
+    {{
+      "mapping": [
+        {{"id": "hall-1", "type": "hall", "zoneKey": "C"}},
+        {{"id": "amenity-parking", "type": "parking", "zoneKey": "NW"}}
+      ]
+    }}
+    """
+
+    try:
+        completion = client.chat.completions.create(
+            model="llama-3.1-8b-instant",
+            messages=[{"role": "user", "content": prompt}],
+            response_format={"type": "json_object"},
+            temperature=0.2,
+        )
+        return json.loads(completion.choices[0].message.content)
+    except Exception as e:
+        print(f"AI Vastu Mapping Error: {e}")
+        return None

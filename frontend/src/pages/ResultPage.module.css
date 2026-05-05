@@ -108,6 +108,32 @@
   border: 1px solid rgba(6, 214, 160, 0.2);
 }
 
+/* ---- Section common ---- */
+.section {
+  composes: glass-card from global;
+  padding: 2.5rem;
+}
+
+.splitRow {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 2rem;
+  align-items: stretch;
+}
+
+.splitRow > .section {
+  margin-top: 0;
+}
+
+@media (max-width: 900px) {
+  .splitRow {
+    flex-direction: column;
+  }
+  .splitRow > .section {
+    width: 100%;
+  }
+}
+
 /* ---- Total cost hero ---- */
 .totalCost {
   composes: glass-card from global;
@@ -212,26 +238,37 @@
 
 .inputGrid {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 0;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-md);
-  overflow: hidden;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
 }
 
 .inputRow {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 0.8rem 1.1rem;
-  border-bottom: 1px solid var(--color-border);
-  border-right: 1px solid var(--color-border);
+  padding: 0.85rem 1.25rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  transition: background 0.2s ease;
 }
-.inputRow:nth-child(even) { border-right: none; }
-.inputRow:nth-last-child(-n+2) { border-bottom: none; }
 
-.inputLabel { font-size: 0.82rem; color: var(--text-muted); }
-.inputValue { font-size: 0.9rem; font-weight: 600; color: var(--text-primary); }
+.inputRow:hover {
+  background: rgba(0, 229, 255, 0.05);
+  border-color: rgba(0, 229, 255, 0.2);
+}
+
+.inputLabel { 
+  font-size: 0.85rem; 
+  color: var(--text-muted); 
+  font-weight: 500;
+}
+.inputValue { 
+  font-size: 0.95rem; 
+  font-weight: 600; 
+  color: var(--text-primary); 
+  text-align: right;
+}
 
 /* ---- Amenities ---- */
 .amenityList { display: flex; flex-direction: column; gap: 0.5rem; }
